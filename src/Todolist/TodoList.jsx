@@ -1,31 +1,45 @@
-import { useState } from "react";
-import { TodoItem } from "../TodoItem/TodoItem.jsx";
-
+import { useState } from 'react'
+import { TodoItem } from '../TodoItem/TodoItem.jsx'
 
 export const TodoList = () => {
-  const [todos, setTodos] = useState(["HW","Study React", "Go Shopping", "Clean the house", "Exercise"]); 
-  const [newTask, setNewTask] = useState("");
+  const [todos, setTodos] = useState([
+    'לכתוב שיעורי בית',
+    'לנקות את החדר',
+    'לקנות חלב',
+  ])
+  const [newTask, setNewTask] = useState('')
+
   const addTask = () => {
-  if (newTask.trim() === "") return;
-  if (todos.includes(newTask.trim())) return;
-  setTodos([...todos, newTask]);
-  setNewTask("");
-};
+    const task = newTask.trim()
+    if (task === '' || todos.includes(task)) return
+    setTodos((previousTodos) => [...previousTodos, task])
+    setNewTask('')
+  }
+
   return (
-    <> 
-      <form onSubmit={(e) => { e.preventDefault(); addTask(); }}>
+    <div className="todo-app">
+      <h1>רשימת משימות</h1>
+
+      <form
+        onSubmit={(event) => {
+          event.preventDefault()
+          addTask()
+        }}
+      >
         <input
           type="text"
-          placeholder="הכנס משימה חדשה"
           value={newTask}
-          onChange={(e) => setNewTask(e.target.value)}/>
+          onChange={(event) => setNewTask(event.target.value)}
+          placeholder="הכנס משימה חדשה"
+        />
         <button type="submit">אישור</button>
-      </form> 
+      </form>
 
-    <ul>
-      {todos.map((todo) => (
-        <TodoItem key={todo} todo={todo} />
-      ))}
-    </ul></>
-  );
-};
+      <ul className="todo-list">
+        {todos.map((todo) => (
+          <TodoItem key={todo} todo={todo} />
+        ))}
+      </ul>
+    </div>
+  )
+}
